@@ -1,6 +1,8 @@
 # F5 Archiver
 This repository contains a description and C implementation of a steganographic data compression technique based on the [F5 algorithm](https://link.springer.com/chapter/10.1007%2F3-540-45496-9_21) in forms of a library and a command-line tool.
-With it, you can embed any binary data in your JPEG files reducing total data space in your memory without noticeable changes in used images. 
+With it, you can embed any binary data in your JPEG files reducing total data space in your memory without noticeable changes in used images.
+
+You can read a little more on the subject in my [medium post](https://medium.com/@labunskya/about-a-strange-data-compression-method-4d0d9d2e5714).
 
 ## Build
 Simple `make` used to build everything. If you want to follow a non-Unix way, you'll need to figure it out for yourself.
