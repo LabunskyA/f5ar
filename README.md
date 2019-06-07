@@ -53,4 +53,4 @@ Also check out [the main header file](f5ar.h) for more insight on advanced usage
 If you are a weirdo and want to use the library the same way you are using the command-line tool, you can use `libf5arcmd` target and `f5ar_cmd.h` header file avoiding any confusion using process forking, pipes and other stuff. 
 
 ## License
-This repository distributed under the [Simplified BSD License](LICENSE).
+[Simplified BSD](LICENSE).
