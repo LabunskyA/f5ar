@@ -29,6 +29,8 @@ And this one to unpack it:
 ./f5ar -u [acrhive file path] [output file]
 ~~~
 
+Make sure that your regex matches only actual jpeg files to prevent errors.
+
 ### API
 An API provided by the target `libf5ar` and `f5ar.h` header file. 
 
