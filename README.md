@@ -5,7 +5,7 @@ With it you can embed any binary data in your JPEG files reducing total data spa
 You can read a little more on the subject in my [medium post](https://medium.com/@labunskya/about-a-strange-data-compression-method-4d0d9d2e5714).
 
 ## Building
-Simple `make` used to build everything. If you want to follow a non-Unix way, you'll need to figure it out for yourself.
+Simple `make` used to build everything. On windows you can use Cygwin or MSYS with MinGw to use it properly. If you want to follow a non-Unix way, you'll need to figure it out for yourself.
 
 ### Dependencies
 This project depends on [libjpeg](http://libjpeg.sourceforge.net) (for JPEG decoding and encoding), [pcre](https://www.pcre.org) (POSIX regular expressions support) and [tinydir](https://github.com/cxong/tinydir) (for a platform-independent filesystem traversal) APIs. Since tinydir provided via the simple header file included in the tree, you only need to make sure you have POSIX regex and libjpeg-compatible APIs linked during the compilation.
