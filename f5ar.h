@@ -57,7 +57,7 @@ int f5ar_add_file(f5archive *, const char *path);
 /* size will be updated via the pointer as the file size could change and should contain the original size */
 int f5ar_add_mem(f5archive *archive, void *ptr, size_t* size);
 
-/* Free all used by the archive memory and close all openned file streams */
+/* Free all used by the archive memory and close all opened file streams */
 void f5ar_destroy(f5archive *);
 
 /* Will be called only once */
@@ -81,8 +81,8 @@ f5ar_blob *f5ar_export_order_used(f5archive *);
 /* Decompression API */
 
 /* Use this functions to import previously exported order into the other array
-* This call will destroy the existing archieve order and free all associated memory
-* Archive will contain only hashes in the specefied order, you need to use **trycomplete**
+* This call will destroy the existing archive order and free all associated memory
+* Archive will contain only hashes in the specified order, you need to use **fill**
 * functions to make it suitable for the compression and decompression ones */
 int f5ar_import_order(f5archive *, f5ar_blob *);
 
