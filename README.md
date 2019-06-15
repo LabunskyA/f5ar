@@ -1,15 +1,18 @@
 # F5 Archiver
-This repository contains a description and a C implementation of a steganographic data compression technique based on the [F5 algorithm](https://link.springer.com/chapter/10.1007%2F3-540-45496-9_21) in forms of a library and a command-line tool.
-With it, you can embed any binary data in your JPEG files reducing total data space in your memory without noticeable changes in used images. 
+This repository contains pure C implementation of a steganographic data compression technique based on the [F5 algorithm](https://link.springer.com/chapter/10.1007%2F3-540-45496-9_21) in forms of a library and a command-line tool.
+With it you can embed any binary data in your JPEG files reducing total data space in your memory without noticeable changes in used images.
 
-## Build
-Simple `make` used to build everything. If you want to follow a non-Unix way, you'll need to figure it out for yourself.
+You can read a little more on the subject in my [medium post](https://medium.com/@labunskya/about-a-strange-data-compression-method-4d0d9d2e5714).
+
+## Building
+Simple `make` used to build everything. On windows you can use Cygwin or MSYS with MinGw to use it properly. If you want to follow a non-Unix way, you'll need to figure it out for yourself.
 
 ### Dependencies
-This project depends on [libjpeg](http://libjpeg.sourceforge.net) (for JPEG decoding and encoding), [pcreposix](https://www.pcre.org) (regular expressions support) and [tinydir](https://github.com/cxong/tinydir) (for a platform-independent filesystem traversal) APIs.
-Since tinydir provided via the simple header file included in the tree, you only need to make sure you have POSIX regex libjpeg-compatible APIs linked during the compilation.
-If it is not present on your machine, you can build static versions of [libjpeg-turbo's](https://libjpeg-turbo.org) and [pcre] from an official repositories locally using `make libjpeg` command.
-All necessary headers are also included in the tree. 
+This project depends on [libjpeg](http://libjpeg.sourceforge.net) (for JPEG decoding and encoding), [pcre](https://www.pcre.org) (POSIX regular expressions support) and [tinydir](https://github.com/cxong/tinydir) (for a platform-independent filesystem traversal) APIs. Since tinydir provided via the simple header file included in the tree, you only need to make sure you have POSIX regex and libjpeg-compatible APIs linked during the compilation.
+
+If something is not present on your machine, you can build static versions of both [libjpeg-turbo's](https://libjpeg-turbo.org) and pcre from an official repositories locally using `make libjpeg` and `make pcre` commands. Note that you will need `wget`, `git` and `cmake` to do that.
+
+All necessary headers included in the tree.
 
 ## Usage
 You can use F5-based data compression via both command-line tool and C/C++ API.
@@ -18,13 +21,15 @@ You can use F5-based data compression via both command-line tool and C/C++ API.
 You pack and unpack archives from a terminal using f5ar executable in a simple Unix way.
 
 Locate built executable `f5ar` and use this command to pack data:
-~~~
+~~~bash
 ./f5ar -p [root library folder] [regex] [file to compress] [archive name]
 ~~~
 And this one to unpack it: 
 ~~~bash
 ./f5ar -u [acrhive file path] [output file]
 ~~~
+
+Make sure that your regex matches only actual jpeg files to prevent errors.
 
 ### API
 An API provided by the target `libf5ar` and `f5ar.h` header file. 
@@ -53,4 +58,4 @@ Also check out [the main header file](f5ar.h) for more insight on advanced usage
 If you are a weirdo and want to use the library the same way you are using the command-line tool, you can use `libf5arcmd` target and `f5ar_cmd.h` header file avoiding any confusion using process forking, pipes and other stuff. 
 
 ## License
-This repository distributed under the [Simplified BSD License](LICENSE).
+[Simplified BSD](LICENSE)
