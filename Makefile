@@ -1,4 +1,4 @@
-# CC = gcc
+# CC = clang
 CFLAGS = -Wall -O3 -std=c99 -I. -Iinclude
 LDFLAGS = -Llib -ljpeg -lpcreposix -lpcre
 

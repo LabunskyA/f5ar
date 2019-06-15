@@ -215,17 +215,13 @@ static f5archive_capacity capacity(container_t *container, struct f5archive_ctx*
     if (err)
         return capacity;
 
-#define height(container) container->jpeg.dstruct.comp_info[0].height_in_blocks
-    for (JDIMENSION row_id = 0; row_id < height(container); row_id++) {
-#undef height
+    for (JDIMENSION row_id = 0; row_id < container->jpeg.dstruct.comp_info[0].height_in_blocks; row_id++) {
         JBLOCKROW row = container->jpeg.dstruct.mem->access_virt_barray(
                 (j_common_ptr) &container->jpeg.dstruct, container->jpeg.dct_arrays[0],
                 row_id, (JDIMENSION) 1, FALSE
         )[0];
 
-#define width(container) container->jpeg.dstruct.comp_info[0].width_in_blocks
-        for (size_t block_id = 0; block_id < width(container); block_id++) {
-#undef width
+        for (size_t block_id = 0; block_id < container->jpeg.dstruct.comp_info[0].width_in_blocks; block_id++) {
             for (unsigned i = 0; i < DCTSIZE2; i++) {
                 const JCOEF c = abs(row[block_id][i]);
 
@@ -251,8 +247,8 @@ int f5ar_analyze(f5archive *archive) {
     while (el) {
         const f5archive_capacity local = capacity(&el->container, archive->ctx);
 
-        archive->capacity.full += local.full,
-        archive->capacity.shrinkable += local.shrinkable,
+        archive->capacity.full += local.full;
+        archive->capacity.shrinkable += local.shrinkable;
 
         el = el->next;
     }
@@ -379,7 +375,8 @@ int f5ar_pack(f5archive *archive, const char *data, size_t size) {
     size_t n = (1 << archive->meta.k) - 1;
 
     JCOEF** a = malloc(n * sizeof(JCOEF*));
-    if (!a) return F5AR_MALLOC_ERR;
+    if (!a)
+        return F5AR_MALLOC_ERR;
 
     struct linked_container* el = archive->ctx->head;
     int err = container_open(&el->container, &archive->ctx->err);
@@ -388,16 +385,16 @@ int f5ar_pack(f5archive *archive, const char *data, size_t size) {
         return err;
     }
 
-    unsigned msg_shift = 0;
+    unsigned msg_mask = 1;
     size_t msg_i = 0;
 
     while (msg_i < size && !err) {
         unsigned kword = 0;
-        for (unsigned k_shift = 0; k_shift < archive->meta.k && msg_i < size; ++k_shift) {
-            kword = (data[msg_i] & (1 << msg_shift)) ? (kword | (1 << k_shift)) : kword;
+        for (unsigned k_mask = 1, k_lim = 1 << archive->meta.k; k_mask < k_lim && msg_i < size; k_mask <<= 1) {
+            kword = (data[msg_i] & msg_mask) ? (kword | k_mask) : kword;
 
-            msg_shift = (++msg_shift == 8) ? 0 : msg_shift;
-            msg_i += (msg_shift == 0) ? 1 : 0;
+            msg_mask = ((msg_mask <<= 1) == 256) ? 1 : msg_mask;
+            msg_i += (msg_mask == 1) ? 1 : 0;
         }
 
         struct linked_container* local_el = el;
@@ -431,9 +428,9 @@ int f5ar_pack(f5archive *archive, const char *data, size_t size) {
             if ((*a[s-1] = val) != 0)
                 break;
 
+            ai = n-1;
             while (s < n)
                 a[s-1] = a[s], s++;
-            ai = n-1;
         }
 
         err = catch_up(archive, &el, local_el);
